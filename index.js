@@ -108,14 +108,25 @@
       return rgbHex(r, g, b);
     });
     cmyk = _.map(rgb, function(arg1) {
-      var b, g, r;
+      var b, c, g, k, m, r, ref, y;
       r = arg1.r, g = arg1.g, b = arg1.b;
-      return rgbCmyk([r, g, b]);
+      ref = rgbCmyk([r, g, b]), c = ref[0], m = ref[1], y = ref[2], k = ref[3];
+      return {
+        c: c,
+        m: m,
+        y: y,
+        k: k
+      };
     });
     hsl = _.map(rgb, function(arg1) {
-      var b, g, r;
+      var b, g, h, l, r, ref, s;
       r = arg1.r, g = arg1.g, b = arg1.b;
-      return rgbToHsl(r, g, b);
+      ref = rgbToHsl(r, g, b), h = ref[0], s = ref[1], l = ref[2];
+      return {
+        h: h,
+        s: s,
+        l: l
+      };
     });
     css = "background-image:\n  -webkit-radial-gradient(0% 0%, circle, " + colors[0] + ", transparent),\n  -webkit-radial-gradient(100% 0%, circle, " + colors[1] + ", transparent),\n  -webkit-radial-gradient(0% 100%, circle, " + colors[2] + ", transparent),\n  -webkit-radial-gradient(100% 100%, circle, " + colors[3] + ", transparent);";
     return {

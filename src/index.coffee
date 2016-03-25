@@ -66,10 +66,12 @@ createCss = ({path, rgb}) ->
     rgbHex(r, g, b)
 
   cmyk = _.map rgb, ({r, g, b}) ->
-    rgbCmyk([r, g, b])
+    [c, m, y, k] = rgbCmyk([r, g, b])
+    {c, m, y, k}
 
   hsl = _.map rgb, ({r, g, b}) ->
-    rgbToHsl(r, g, b)
+    [h, s, l] = rgbToHsl(r, g, b)
+    {h, s, l}
 
   css = """
     background-image:

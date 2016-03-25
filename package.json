@@ -1,6 +1,6 @@
 {
   "name": "corner-colors",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Get average colors from all four courners of your images",
   "main": "index.js",
   "scripts": {
