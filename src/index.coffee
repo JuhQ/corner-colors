@@ -2,6 +2,9 @@ Q = require('q')
 fs = require('fs')
 _ = require('lodash')
 lwip = require('lwip')
+rgbHex = require('rgb-hex')
+rgbCmyk = require('rgb-cmyk')
+rgbToHsl = require('rgb-to-hsl');
 
 getImageInstance = (path) ->
   Q.ninvoke(lwip, 'open', path)
@@ -56,9 +59,17 @@ getAveragePalette = ({image, path}) ->
 
 
 createCss = ({path, rgb}) ->
-  colors = _.reduce rgb, (result, {r, g, b}) ->
-    result.concat "rgb(#{r}, #{g}, #{b})"
-  , []
+  colors = _.map rgb, ({r, g, b}) ->
+    "rgb(#{r}, #{g}, #{b})"
+
+  hex = _.map rgb, ({r, g, b}) ->
+    rgbHex(r, g, b)
+
+  cmyk = _.map rgb, ({r, g, b}) ->
+    rgbCmyk([r, g, b])
+
+  hsl = _.map rgb, ({r, g, b}) ->
+    rgbToHsl(r, g, b)
 
   css = """
     background-image:
@@ -68,7 +79,7 @@ createCss = ({path, rgb}) ->
       -webkit-radial-gradient(100% 100%, circle, #{colors[3]}, transparent);
   """
 
-  {path, rgb, css}
+  {path, rgb, hex, cmyk, hsl, css}
 
 
 sample = (path) ->

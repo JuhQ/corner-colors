@@ -1,8 +1,8 @@
 {
   "name": "corner-colors",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Get average colors from all four courners of your images",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,7 +15,10 @@
   "dependencies": {
     "lodash": "4.5.1",
     "lwip": "0.0.8",
-    "q": "1.4.1"
+    "q": "1.4.1",
+    "rgb-cmyk": "1.0.0",
+    "rgb-hex": "1.0.0",
+    "rgb-to-hsl": "0.0.1"
   },
   "devDependencies": {
     "coffee-script": "1.10.0",

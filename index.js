@@ -1,5 +1,5 @@
 (function() {
-  var Q, _, createCoordinates, createCss, fs, getAveragePalette, getAverageRGB, getImageInstance, lwip, sample;
+  var Q, _, createCoordinates, createCss, fs, getAveragePalette, getAverageRGB, getImageInstance, lwip, rgbCmyk, rgbHex, rgbToHsl, sample;
 
   Q = require('q');
 
@@ -8,6 +8,12 @@
   _ = require('lodash');
 
   lwip = require('lwip');
+
+  rgbHex = require('rgb-hex');
+
+  rgbCmyk = require('rgb-cmyk');
+
+  rgbToHsl = require('rgb-to-hsl');
 
   getImageInstance = function(path) {
     return Q.ninvoke(lwip, 'open', path).then(function(image) {
@@ -89,17 +95,35 @@
   };
 
   createCss = function(arg) {
-    var colors, css, path, rgb;
+    var cmyk, colors, css, hex, hsl, path, rgb;
     path = arg.path, rgb = arg.rgb;
-    colors = _.reduce(rgb, function(result, arg1) {
+    colors = _.map(rgb, function(arg1) {
       var b, g, r;
       r = arg1.r, g = arg1.g, b = arg1.b;
-      return result.concat("rgb(" + r + ", " + g + ", " + b + ")");
-    }, []);
+      return "rgb(" + r + ", " + g + ", " + b + ")";
+    });
+    hex = _.map(rgb, function(arg1) {
+      var b, g, r;
+      r = arg1.r, g = arg1.g, b = arg1.b;
+      return rgbHex(r, g, b);
+    });
+    cmyk = _.map(rgb, function(arg1) {
+      var b, g, r;
+      r = arg1.r, g = arg1.g, b = arg1.b;
+      return rgbCmyk([r, g, b]);
+    });
+    hsl = _.map(rgb, function(arg1) {
+      var b, g, r;
+      r = arg1.r, g = arg1.g, b = arg1.b;
+      return rgbToHsl(r, g, b);
+    });
     css = "background-image:\n  -webkit-radial-gradient(0% 0%, circle, " + colors[0] + ", transparent),\n  -webkit-radial-gradient(100% 0%, circle, " + colors[1] + ", transparent),\n  -webkit-radial-gradient(0% 100%, circle, " + colors[2] + ", transparent),\n  -webkit-radial-gradient(100% 100%, circle, " + colors[3] + ", transparent);";
     return {
       path: path,
       rgb: rgb,
+      hex: hex,
+      cmyk: cmyk,
+      hsl: hsl,
       css: css
     };
   };
